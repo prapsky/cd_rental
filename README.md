@@ -9,7 +9,7 @@ Count payment of CD that we rent at CD Rental.
 ### go mod
 Execute go mod at root this folder using this command:
 ```
-$ go mod cd_rental
+$ go mod init cd_rental
 ```
 Open go.mod then we should see:
 ```
