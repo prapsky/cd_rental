@@ -4,7 +4,6 @@ import (
 	"cd_rental/db"
 	"database/sql"
 	"errors"
-	"log"
 	"strconv"
 	"time"
 )
@@ -42,7 +41,6 @@ func GetCollection(CollectionID string) (CollectionResponse, error) {
 
 	cdID, err := strconv.Atoi(CollectionID)
 	if err != nil {
-		log.Println("You got error")
 		return collectionResponse, err
 	}
 
