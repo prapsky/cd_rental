@@ -19,6 +19,10 @@ go 1.13
 ```
 
 ### Unit Test
+First, we need to remove cache by using this command:
+```
+$ go clean -testcache
+```
 Execute unit test at root this folder using this command:
 ```
 $ go test ./...
