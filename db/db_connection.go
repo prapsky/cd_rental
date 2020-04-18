@@ -14,7 +14,7 @@ var (
 
 func ConnectionDB() *sql.DB {
 	var err error
-	DB, err = sql.Open("postgres", "user=suprapto dbname=cdrental sslmode=disable")
+	DB, err = sql.Open("postgres", "user=prapsky dbname=cdrental sslmode=disable")
 	if err != nil {
 		log.Println(err.Error())
 	}

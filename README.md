@@ -11,6 +11,9 @@ Count payment of CD that we rent at CD Rental.
 2. [Configure at Code](#configure-at-code)
 3. [Create Tables](#create-tables)
 
+## API
+1. [Collection](#collection)
+
 ### go mod
 Execute go mod at root this folder using this command:
 ```
@@ -94,4 +97,39 @@ DB, err = sql.Open("postgres", "user=prapsky dbname=cdrental sslmode=disable")
 Create Collection table:
 ```
 CREATE TABLE collection (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, title TEXT NOT NULL, category TEXT NOT NULL, quantity INT DEFAULT 0 NOT NULL, rate INT DEFAULT 0 NOT NULL);
+```
+
+### Collection
+1. POST - /collection
+Request
+```
+{
+    "title": "Star Wars",
+    "category": "Sci-Fi",
+    "quantity": 20,
+    "rate": 15000
+}
+```
+Response Body (Status: 201 Created)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-18T23:52:40.238858+07:00",
+    "title": "Star Wars",
+    "category": "Sci-Fi",
+    "quantity": 20,
+    "rate": 15000
+}
+```
+2. GET - /collection/{collection_id}
+Example: /collection/1 . Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-18T23:52:40.238858Z",
+    "title": "Star Wars",
+    "category": "Sci-Fi",
+    "quantity": 20,
+    "rate": 15000
+}
 ```
