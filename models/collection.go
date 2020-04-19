@@ -15,6 +15,14 @@ type Collection struct {
 	Rate     int    `json:"rate"`
 }
 
+type UpdateCollection struct {
+	ID       int    `json:"id"`
+	Title    string `json:"title"`
+	Category string `json:"category"`
+	Quantity int    `json:"quantity"`
+	Rate     int    `json:"rate"`
+}
+
 type CollectionResponse struct {
 	ID       int       `json:"id"`
 	DateTime time.Time `json:"dateTime"`
@@ -32,6 +40,7 @@ const (
 	createCollectionQuery = "INSERT INTO collection(date_time, title, category, quantity, rate) VALUES($1, $2, $3, $4, $5) RETURNING id"
 	getCollectionQuery    = "SELECT id, date_time, title, category, quantity, rate FROM collection WHERE id = $1"
 	getCollectionsQuery   = "SELECT id, date_time, title, category, quantity, rate FROM collection ORDER BY id"
+	updateCollectionQuery = "UPDATE collection SET date_time=$1, title=$2, category=$3, quantity=$4, rate=$5 WHERE id=$6"
 )
 
 func NewCollectionResponse(id int, dateTime time.Time, title string, category string, quantity int, rate int) CollectionResponse {
@@ -120,4 +129,32 @@ func GetCollections() (CollectionsResponse, error) {
 	}
 
 	return collectionsResponse, nil
+}
+
+func PutCollection(singleUpdateCollection UpdateCollection) (CollectionResponse, error) {
+	con := db.ConnectionDB()
+
+	collectionResponse := CollectionResponse{}
+
+	collectionResponse.DateTime = time.Now()
+
+	_, err := con.Exec(updateCollectionQuery,
+		collectionResponse.DateTime,
+		singleUpdateCollection.Title,
+		singleUpdateCollection.Category,
+		singleUpdateCollection.Quantity,
+		singleUpdateCollection.Rate,
+		singleUpdateCollection.ID)
+
+	if err != nil {
+		return collectionResponse, err
+	}
+
+	collectionResponse.ID = singleUpdateCollection.ID
+	collectionResponse.Title = singleUpdateCollection.Title
+	collectionResponse.Category = singleUpdateCollection.Category
+	collectionResponse.Quantity = singleUpdateCollection.Quantity
+	collectionResponse.Rate = singleUpdateCollection.Rate
+
+	return collectionResponse, nil
 }

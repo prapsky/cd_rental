@@ -8,7 +8,7 @@ import (
 
 func main() {
 	http.HandleFunc("/collection", controllers.PostCollection)
-	http.HandleFunc("/collection/", controllers.GetCollection)
+	http.HandleFunc("/collection/", controllers.Collection)
 	http.HandleFunc("/collection/all", controllers.GetCollections)
 
 	http.HandleFunc("/user", controllers.PostUser)

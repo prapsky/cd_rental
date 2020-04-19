@@ -207,6 +207,29 @@ Example: /collection/all <br> Response Body (Status: 200 OK)
     ]
 }
 ```
+#### PUT - /collection/{collection_id}
+Example: /collection/2 <br>
+Request
+```
+{
+    "id": 2,
+    "title": "Captain America",
+    "category": "Sci-Fi",
+    "quantity": 19,
+    "rate": 10000
+}
+```
+Response Body (Status: 200 OK)
+```
+{
+    "id": 2,
+    "dateTime": "2020-04-19T19:25:41.436054+07:00",
+    "title": "Captain America",
+    "category": "Sci-Fi",
+    "quantity": 19,
+    "rate": 10000
+}
+```
 
 ### User
 #### POST - /user

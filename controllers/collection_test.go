@@ -11,7 +11,7 @@ func TestGetCollection(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodGet, "/collection/1", nil)
 	response := httptest.NewRecorder()
 
-	GetCollection(response, request)
+	Collection(response, request)
 
 	t.Run("Get collection: ", func(t *testing.T) {
 		got := response.Body.Bytes()
