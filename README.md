@@ -43,7 +43,7 @@ $ go run main.go
 ```
 
 ### Setup at Local
-For the first, install PostgreSQL to your local.
+For the first, install PostgreSQL to your local. <br>
 Access PostgreSQL using this command:
 ```
 $ psql
@@ -55,7 +55,7 @@ Type "help" for help.
 
 prapsky=#
 ```
-For example, the name of PostgreSQL's user is prapsky.
+For example, the name of PostgreSQL's user is prapsky. <br>
 Create database, for example the name is cdrental, using this command:
 ```
 $ CREATE DATABASE cdrental;
@@ -86,9 +86,28 @@ Then we should see:
 You are now connected to database "cdrental" as user "prapsky".
 cdrental=#
 ```
+Show tables at database using this command:
+```
+$ \dt
+```
+For example we should see:
+```
+cdrental-# \dt
+           List of relations
+ Schema |    Name    | Type  |  Owner
+--------+------------+-------+----------
+ public | collection | table | prapsky
+(1 row)
+
+cdrental-#
+```
+To quit from PostgreSQL, we can using this command:
+```
+$ \q
+```
 
 ### Configure at Code
-For example, the name of PostgreSQL's user is prapsky, the name of database is cdrental. Edit at db_connection.go:
+For example, the name of PostgreSQL's user is prapsky, the name of database is cdrental. <br> Edit at db_connection.go:
 ```
 DB, err = sql.Open("postgres", "user=prapsky dbname=cdrental sslmode=disable")
 ```
@@ -100,7 +119,7 @@ CREATE TABLE collection (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT
 ```
 
 ### Collection
-1. POST - /collection
+#### POST - /collection
 Request
 ```
 {
@@ -121,8 +140,8 @@ Response Body (Status: 201 Created)
     "rate": 15000
 }
 ```
-2. GET - /collection/{collection_id}
-Example: /collection/1 . Response Body (Status: 200 OK)
+#### GET - /collection/{collection_id}
+Example: /collection/1 <br> Response Body (Status: 200 OK)
 ```
 {
     "id": 1,
@@ -131,5 +150,53 @@ Example: /collection/1 . Response Body (Status: 200 OK)
     "category": "Sci-Fi",
     "quantity": 20,
     "rate": 15000
+}
+```
+#### GET - /collection/all
+Example: /collection/all <br> Response Body (Status: 200 OK)
+```
+{
+    "collections": [
+        {
+            "id": 1,
+            "dateTime": "2020-04-18T23:52:40.238858Z",
+            "title": "Star Wars",
+            "category": "Sci-Fi",
+            "quantity": 20,
+            "rate": 15000
+        },
+        {
+            "id": 2,
+            "dateTime": "2020-04-19T00:21:04.292774Z",
+            "title": "Captain America",
+            "category": "Sci-Fi",
+            "quantity": 20,
+            "rate": 10000
+        },
+        {
+            "id": 3,
+            "dateTime": "2020-04-19T15:21:58.669116Z",
+            "title": "James Bond",
+            "category": "Action",
+            "quantity": 10,
+            "rate": 10000
+        },
+        {
+            "id": 4,
+            "dateTime": "2020-04-19T15:23:53.729481Z",
+            "title": "La La Land",
+            "category": "Drama",
+            "quantity": 10,
+            "rate": 7500
+        },
+        {
+            "id": 5,
+            "dateTime": "2020-04-19T15:24:19.87131Z",
+            "title": "The Social Network",
+            "category": "Drama",
+            "quantity": 5,
+            "rate": 5000
+        }
+    ]
 }
 ```
