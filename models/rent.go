@@ -29,8 +29,9 @@ type RentsResponse struct {
 }
 
 const (
-	createRentQuery = "INSERT INTO rent(date_time, queue_number, user_id, cd_id, rent_quantity) VALUES($1, $2, $3, $4, $5) RETURNING id"
-	getRentQuery    = "SELECT id, date_time, queue_number, user_id, cd_id, rent_quantity FROM rent WHERE id = $1"
+	createRentQuery            = "INSERT INTO rent(date_time, queue_number, user_id, cd_id, rent_quantity) VALUES($1, $2, $3, $4, $5) RETURNING id"
+	getRentQuery               = "SELECT id, date_time, queue_number, user_id, cd_id, rent_quantity FROM rent WHERE id = $1"
+	getRentsByQueueNumberQuery = "SELECT id, date_time, queue_number, user_id, cd_id, rent_quantity FROM rent WHERE queue_number = $1 ORDER BY id"
 )
 
 func NewRentResponse(id int, dateTime time.Time, queueNumber int, userId int, cdId int, rentQuantity int) RentResponse {
@@ -90,4 +91,38 @@ func GetRent(RentID string) (RentResponse, error) {
 	}
 
 	return rentResponse, nil
+}
+
+func GetRentQueue(QueueNumber string) (RentsResponse, error) {
+	con := db.ConnectionDB()
+
+	rentsResponse := RentsResponse{}
+
+	queueNumber, err := strconv.Atoi(QueueNumber)
+	if err != nil {
+		return rentsResponse, err
+	}
+
+	rows, err := con.Query(getRentsByQueueNumberQuery, queueNumber)
+	if err != nil {
+		return rentsResponse, err
+	}
+
+	for rows.Next() {
+		rentResponse := RentResponse{}
+
+		err2 := rows.Scan(&rentResponse.ID,
+			&rentResponse.DateTime,
+			&rentResponse.QueueNumber,
+			&rentResponse.UserID,
+			&rentResponse.CdID,
+			&rentResponse.RentQuantity)
+
+		if err2 != nil {
+			return rentsResponse, err2
+		}
+		rentsResponse.RentsResponse = append(rentsResponse.RentsResponse, rentResponse)
+	}
+
+	return rentsResponse, nil
 }

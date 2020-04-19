@@ -26,3 +26,8 @@ func RentID(w http.ResponseWriter, r *http.Request) (string, error) {
 	param := strings.TrimPrefix(r.URL.Path, "/rent/")
 	return param, nil
 }
+
+func QueueNumber(w http.ResponseWriter, r *http.Request) (string, error) {
+	param := strings.TrimPrefix(r.URL.Path, "/rent/queue/")
+	return param, nil
+}

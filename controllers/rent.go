@@ -84,3 +84,33 @@ func Rent(w http.ResponseWriter, r *http.Request) {
 		logerr(w.Write([]byte(`{"message": "not found"}`)))
 	}
 }
+
+func RentQueue(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	switch r.Method {
+	case "GET":
+		queueNumber, err := QueueNumber(w, r)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		rentQueue, err1 := models.GetRentQueue(queueNumber)
+		if err1 != nil {
+			http.Error(w, err1.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		jsonInBytes, err2 := json.Marshal(rentQueue)
+		if err2 != nil {
+			http.Error(w, err2.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		logerr(w.Write(jsonInBytes))
+
+	default:
+		w.WriteHeader(http.StatusNotFound)
+		logerr(w.Write([]byte(`{"message": "not found"}`)))
+	}
+}

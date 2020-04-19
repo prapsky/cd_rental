@@ -379,19 +379,6 @@ Response Body (Status: 201 Created)
     "rentQuantity": 1
 }
 ```
-#### GET - /rent/{rent_id}
-Example: /rent/1 <br> 
-Response Body (Status: 200 OK)
-```
-{
-    "id": 1,
-    "dateTime": "2020-04-19T22:38:40.12395Z",
-    "queueNumber": 1,
-    "userId": 1,
-    "cdId": 1,
-    "rentQuantity": 1
-}
-```
 Ensure that quantity of that cd_id (cd_id = 1) is substracted by rent_quantity (rent_quantity = 1). <br>
 For example, initial quantity of that cd_id (cd_id = 1) in collection is 20. After substracted by rent_quantity (rent_quantity = 1), the final quantity is 19. <br>
 Check by GET request to /collection/1 <br> Response Body (Status: 200 OK)
@@ -405,4 +392,41 @@ Check by GET request to /collection/1 <br> Response Body (Status: 200 OK)
     "rate": 15000
 }
 ```
-
+#### GET - /rent/{rent_id}
+Example: /rent/1 <br> 
+Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-19T22:38:40.12395Z",
+    "queueNumber": 1,
+    "userId": 1,
+    "cdId": 1,
+    "rentQuantity": 1
+}
+```
+#### GET - /rent/queue/{queue_number}
+Example: /rent/queue/1 <br> 
+Response Body (Status: 200 OK)
+```
+{
+    "rents": [
+        {
+            "id": 1,
+            "dateTime": "2020-04-19T22:38:40.12395Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 1,
+            "rentQuantity": 1
+        },
+        {
+            "id": 2,
+            "dateTime": "2020-04-19T22:59:31.291183Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 2,
+            "rentQuantity": 2
+        }
+    ]
+}
+```
