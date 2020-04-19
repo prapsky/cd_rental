@@ -13,6 +13,7 @@ Count payment of CD that we rent at CD Rental.
 
 ## API
 1. [Collection](#collection)
+2. [User](#user)
 
 ### go mod
 Execute go mod at root this folder using this command:
@@ -113,9 +114,15 @@ DB, err = sql.Open("postgres", "user=prapsky dbname=cdrental sslmode=disable")
 ```
 
 ### Create Tables
+#### Collection Table
 Create Collection table:
 ```
 CREATE TABLE collection (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, title TEXT NOT NULL, category TEXT NOT NULL, quantity INT DEFAULT 0 NOT NULL, rate INT DEFAULT 0 NOT NULL);
+```
+#### Users Table
+Create Users table:
+```
+CREATE TABLE users (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, name TEXT NOT NULL, phone_number TEXT NOT NULL, address TEXT NOT NULL);
 ```
 
 ### Collection
@@ -196,6 +203,125 @@ Example: /collection/all <br> Response Body (Status: 200 OK)
             "category": "Drama",
             "quantity": 5,
             "rate": 5000
+        }
+    ]
+}
+```
+
+### User
+#### POST - /user
+Request
+```
+{
+	"name": "Ihsan",
+	"phoneNumber": "085624136133",
+	"address": "Jalan K no.11 Jakarta Selatan"
+}
+```
+Response Body (Status: 201 Created)
+```
+{
+    "id": 11,
+    "dateTime": "2020-04-19T18:33:00.141695+07:00",
+    "name": "Ihsan",
+    "phoneNumber": "085624136133",
+    "address": "Jalan K no.11 Jakarta Selatan"
+}
+```
+#### GET - /user/{user_id}
+Example: /user/1 <br> 
+Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-19T17:09:26.710061Z",
+    "name": "Jeffrey",
+    "phoneNumber": "085624136123",
+    "address": "Jalan A no.1 Jakarta Selatan"
+}
+```
+#### GET - /user/all
+Example: /user/all <br> 
+Response Body (Status: 200 OK)
+```
+{
+    "users": [
+        {
+            "id": 1,
+            "dateTime": "2020-04-19T17:09:26.710061Z",
+            "name": "Jeffrey",
+            "phoneNumber": "085624136123",
+            "address": "Jalan A no.1 Jakarta Selatan"
+        },
+        {
+            "id": 2,
+            "dateTime": "2020-04-19T18:25:52.696274Z",
+            "name": "Jose",
+            "phoneNumber": "085624136124",
+            "address": "Jalan B no.2 Jakarta Selatan"
+        },
+        {
+            "id": 3,
+            "dateTime": "2020-04-19T18:27:45.002081Z",
+            "name": "Alvi",
+            "phoneNumber": "085624136125",
+            "address": "Jalan C no.3 Jakarta Selatan"
+        },
+        {
+            "id": 4,
+            "dateTime": "2020-04-19T18:28:49.214656Z",
+            "name": "Sidney",
+            "phoneNumber": "085624136126",
+            "address": "Jalan D no.4 Jakarta Selatan"
+        },
+        {
+            "id": 5,
+            "dateTime": "2020-04-19T18:29:27.414545Z",
+            "name": "Kenny",
+            "phoneNumber": "085624136127",
+            "address": "Jalan E no.5 Jakarta Selatan"
+        },
+        {
+            "id": 6,
+            "dateTime": "2020-04-19T18:30:08.336506Z",
+            "name": "Joe",
+            "phoneNumber": "085624136128",
+            "address": "Jalan F no.6 Jakarta Selatan"
+        },
+        {
+            "id": 7,
+            "dateTime": "2020-04-19T18:31:02.737774Z",
+            "name": "Jussar",
+            "phoneNumber": "085624136129",
+            "address": "Jalan G no.7 Jakarta Selatan"
+        },
+        {
+            "id": 8,
+            "dateTime": "2020-04-19T18:31:34.965212Z",
+            "name": "Gea",
+            "phoneNumber": "085624136130",
+            "address": "Jalan H no.8 Jakarta Selatan"
+        },
+        {
+            "id": 9,
+            "dateTime": "2020-04-19T18:32:01.429844Z",
+            "name": "Ary",
+            "phoneNumber": "085624136131",
+            "address": "Jalan I no.9 Jakarta Selatan"
+        },
+        {
+            "id": 10,
+            "dateTime": "2020-04-19T18:32:28.686109Z",
+            "name": "Remy",
+            "phoneNumber": "085624136132",
+            "address": "Jalan J no.10 Jakarta Selatan"
+        },
+        {
+            "id": 11,
+            "dateTime": "2020-04-19T18:33:00.141695Z",
+            "name": "Ihsan",
+            "phoneNumber": "085624136133",
+            "address": "Jalan K no.11 Jakarta Selatan"
         }
     ]
 }

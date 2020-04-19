@@ -16,3 +16,8 @@ func CollectionID(w http.ResponseWriter, r *http.Request) (string, error) {
 	param := strings.TrimPrefix(r.URL.Path, "/collection/")
 	return param, nil
 }
+
+func UserID(w http.ResponseWriter, r *http.Request) (string, error) {
+	param := strings.TrimPrefix(r.URL.Path, "/user/")
+	return param, nil
+}
