@@ -101,14 +101,14 @@ func GetUsers() (UsersResponse, error) {
 	for rows.Next() {
 		userResponse := UserResponse{}
 
-		err2 := rows.Scan(&userResponse.ID,
+		err1 := rows.Scan(&userResponse.ID,
 			&userResponse.DateTime,
 			&userResponse.Name,
 			&userResponse.PhoneNumber,
 			&userResponse.Address)
 
-		if err2 != nil {
-			return usersResponse, err2
+		if err1 != nil {
+			return usersResponse, err1
 		}
 		usersResponse.UsersResponse = append(usersResponse.UsersResponse, userResponse)
 	}

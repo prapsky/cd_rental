@@ -15,6 +15,7 @@ Count payment of CD that we rent at CD Rental.
 1. [Collection](#collection)
 2. [User](#user)
 3. [Rent](#rent)
+3. [Rent All](#rent-all)
 
 ### go mod
 Execute go mod at root this folder using this command:
@@ -129,7 +130,11 @@ CREATE TABLE users (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL
 Create Rent table:
 ```
 CREATE TABLE rent (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, queue_number INT NOT NULL, user_id INT REFERENCES users(id), cd_id INT REFERENCES collection(id), rent_quantity INT DEFAULT 0 NOT NULL);
-
+```
+#### Rent All Table
+Create Rent All table:
+```
+CREATE TABLE rentall (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, queue_number INT NOT NULL);
 ```
 
 ### Collection
@@ -410,6 +415,88 @@ Example: /rent/queue/1 <br>
 Response Body (Status: 200 OK)
 ```
 {
+    "rents": [
+        {
+            "id": 1,
+            "dateTime": "2020-04-19T22:38:40.12395Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 1,
+            "rentQuantity": 1
+        },
+        {
+            "id": 2,
+            "dateTime": "2020-04-19T22:59:31.291183Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 2,
+            "rentQuantity": 2
+        }
+    ]
+}
+```
+
+### Rent All
+#### POST - /rent/all
+Request
+```
+{
+    "rents": [
+        {
+            "id": 1,
+            "dateTime": "2020-04-19T22:38:40.12395Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 1,
+            "rentQuantity": 1
+        },
+        {
+            "id": 2,
+            "dateTime": "2020-04-19T22:59:31.291183Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 2,
+            "rentQuantity": 2
+        }
+    ]
+}
+```
+Response Body (Status: 201 Created)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-20T01:20:00.274273+07:00",
+    "queueNumber": 1,
+    "userId": 1,
+    "rents": [
+        {
+            "id": 1,
+            "dateTime": "2020-04-19T22:38:40.12395Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 1,
+            "rentQuantity": 1
+        },
+        {
+            "id": 2,
+            "dateTime": "2020-04-19T22:59:31.291183Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 2,
+            "rentQuantity": 2
+        }
+    ]
+}
+```
+#### GET - /rent/all/{rent_all_id}
+Example: /rent/all/1 <br> 
+Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-20T01:20:00.274273Z",
+    "queueNumber": 1,
+    "userId": 1,
     "rents": [
         {
             "id": 1,
