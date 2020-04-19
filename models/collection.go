@@ -23,6 +23,11 @@ type UpdateCollection struct {
 	Rate     int    `json:"rate"`
 }
 
+type UpdateQuantityCollection struct {
+	ID       int `json:"id"`
+	Quantity int `json:"quantity"`
+}
+
 type CollectionResponse struct {
 	ID       int       `json:"id"`
 	DateTime time.Time `json:"dateTime"`
@@ -37,10 +42,11 @@ type CollectionsResponse struct {
 }
 
 const (
-	createCollectionQuery = "INSERT INTO collection(date_time, title, category, quantity, rate) VALUES($1, $2, $3, $4, $5) RETURNING id"
-	getCollectionQuery    = "SELECT id, date_time, title, category, quantity, rate FROM collection WHERE id = $1"
-	getCollectionsQuery   = "SELECT id, date_time, title, category, quantity, rate FROM collection ORDER BY id"
-	updateCollectionQuery = "UPDATE collection SET date_time=$1, title=$2, category=$3, quantity=$4, rate=$5 WHERE id=$6"
+	createCollectionQuery         = "INSERT INTO collection(date_time, title, category, quantity, rate) VALUES($1, $2, $3, $4, $5) RETURNING id"
+	getCollectionQuery            = "SELECT id, date_time, title, category, quantity, rate FROM collection WHERE id = $1"
+	getCollectionsQuery           = "SELECT id, date_time, title, category, quantity, rate FROM collection ORDER BY id"
+	updateCollectionQuery         = "UPDATE collection SET date_time=$1, title=$2, category=$3, quantity=$4, rate=$5 WHERE id=$6"
+	updateQuantityCollectionQuery = "UPDATE collection SET date_time=$1, quantity=$2 WHERE id=$3"
 )
 
 func NewCollectionResponse(id int, dateTime time.Time, title string, category string, quantity int, rate int) CollectionResponse {
@@ -155,6 +161,41 @@ func PutCollection(singleUpdateCollection UpdateCollection) (CollectionResponse,
 	collectionResponse.Category = singleUpdateCollection.Category
 	collectionResponse.Quantity = singleUpdateCollection.Quantity
 	collectionResponse.Rate = singleUpdateCollection.Rate
+
+	return collectionResponse, nil
+}
+
+func PatchCollection(updateQuantityCollection UpdateQuantityCollection) (CollectionResponse, error) {
+	con := db.ConnectionDB()
+
+	collectionResponse := CollectionResponse{}
+
+	collectionResponse.DateTime = time.Now()
+
+	_, err := con.Exec(updateQuantityCollectionQuery,
+		collectionResponse.DateTime,
+		updateQuantityCollection.Quantity,
+		updateQuantityCollection.ID)
+
+	if err != nil {
+		return collectionResponse, err
+	}
+
+	err1 := con.QueryRow(getCollectionQuery, updateQuantityCollection.ID).
+		Scan(&collectionResponse.ID,
+			&collectionResponse.DateTime,
+			&collectionResponse.Title,
+			&collectionResponse.Category,
+			&collectionResponse.Quantity,
+			&collectionResponse.Rate)
+
+	if err1 == sql.ErrNoRows {
+		return collectionResponse, errors.New("Queue is not found!")
+	}
+
+	if err1 != nil {
+		return collectionResponse, err
+	}
 
 	return collectionResponse, nil
 }

@@ -20,13 +20,13 @@ func PostCollection(w http.ResponseWriter, r *http.Request) {
 
 		response, err1 := models.PostCollection(collection)
 		if err1 != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err1.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		jsonInBytes, err2 := json.Marshal(response)
 		if err2 != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err2.Error(), http.StatusInternalServerError)
 			return
 		}
 		w.WriteHeader(http.StatusCreated)

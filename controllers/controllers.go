@@ -21,3 +21,8 @@ func UserID(w http.ResponseWriter, r *http.Request) (string, error) {
 	param := strings.TrimPrefix(r.URL.Path, "/user/")
 	return param, nil
 }
+
+func RentID(w http.ResponseWriter, r *http.Request) (string, error) {
+	param := strings.TrimPrefix(r.URL.Path, "/rent/")
+	return param, nil
+}

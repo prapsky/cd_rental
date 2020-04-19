@@ -14,6 +14,7 @@ Count payment of CD that we rent at CD Rental.
 ## API
 1. [Collection](#collection)
 2. [User](#user)
+3. [Rent](#rent)
 
 ### go mod
 Execute go mod at root this folder using this command:
@@ -123,6 +124,12 @@ CREATE TABLE collection (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT
 Create Users table:
 ```
 CREATE TABLE users (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, name TEXT NOT NULL, phone_number TEXT NOT NULL, address TEXT NOT NULL);
+```
+#### Rent Table
+Create Rent table:
+```
+CREATE TABLE rent (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, queue_number INT NOT NULL, user_id INT REFERENCES users(id), cd_id INT REFERENCES collection(id), rent_quantity INT DEFAULT 0 NOT NULL);
+
 ```
 
 ### Collection
@@ -349,3 +356,53 @@ Response Body (Status: 200 OK)
     ]
 }
 ```
+
+### Rent
+#### POST - /rent
+Request
+```
+{
+    "queueNumber": 1,
+    "userId": 1,
+    "cdId": 1,
+    "rentQuantity": 1
+}
+```
+Response Body (Status: 201 Created)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-19T22:38:40.12395+07:00",
+    "queueNumber": 1,
+    "userId": 1,
+    "cdId": 1,
+    "rentQuantity": 1
+}
+```
+#### GET - /rent/{rent_id}
+Example: /rent/1 <br> 
+Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-19T22:38:40.12395Z",
+    "queueNumber": 1,
+    "userId": 1,
+    "cdId": 1,
+    "rentQuantity": 1
+}
+```
+Ensure that quantity of that cd_id (cd_id = 1) is substracted by rent_quantity (rent_quantity = 1). <br>
+For example, initial quantity of that cd_id (cd_id = 1) in collection is 20. After substracted by rent_quantity (rent_quantity = 1), the final quantity is 19. <br>
+Check by GET request to /collection/1 <br> Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-19T22:38:40.149754Z",
+    "title": "Star Wars",
+    "category": "Sci-Fi",
+    "quantity": 19,
+    "rate": 15000
+}
+```
+
