@@ -63,7 +63,7 @@ func GetRentAll(RentAllID string) (RentAllResponse, error) {
 	}
 
 	if err1 != nil {
-		return rentAllResponse, err
+		return rentAllResponse, err1
 	}
 
 	rentsResponse := RentsResponse{}

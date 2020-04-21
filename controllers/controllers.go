@@ -41,3 +41,8 @@ func ReturnAllID(w http.ResponseWriter, r *http.Request) (string, error) {
 	param := strings.TrimPrefix(r.URL.Path, "/return/all/")
 	return param, nil
 }
+
+func PaymentID(w http.ResponseWriter, r *http.Request) (string, error) {
+	param := strings.TrimPrefix(r.URL.Path, "/payment/")
+	return param, nil
+}

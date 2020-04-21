@@ -25,5 +25,8 @@ func main() {
 	http.HandleFunc("/return/all", controllers.PostReturnAll)
 	http.HandleFunc("/return/all/", controllers.GetReturnAll)
 
+	http.HandleFunc("/payment", controllers.PostPayment)
+	http.HandleFunc("/payment/", controllers.GetPayment)
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

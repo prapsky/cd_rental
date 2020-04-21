@@ -136,7 +136,7 @@ func GetReturnAll(ReturnAllID string) (ReturnAllResponse, error) {
 		return returnAllResponse, errors.New("Queue is not found!")
 	}
 	if err1 != nil {
-		return returnAllResponse, err
+		return returnAllResponse, err1
 	}
 
 	rentAllResponse := RentAllResponse{}
@@ -148,7 +148,7 @@ func GetReturnAll(ReturnAllID string) (ReturnAllResponse, error) {
 		return returnAllResponse, errors.New("Queue is not found!")
 	}
 	if err2 != nil {
-		return returnAllResponse, err
+		return returnAllResponse, err2
 	}
 
 	rentsResponse := RentsResponse{}
@@ -195,7 +195,7 @@ func GetReturnAll(ReturnAllID string) (ReturnAllResponse, error) {
 			return returnAllResponse, errors.New("Queue is not found!")
 		}
 		if err5 != nil {
-			return returnAllResponse, err
+			return returnAllResponse, err5
 		}
 		returnsResponse.ReturnsResponse[i].RatePerDay = collectionResponse.Rate
 		returnsResponse.ReturnsResponse[i].TotalRate = returnsResponse.ReturnsResponse[i].RatePerDay * returnsResponse.ReturnsResponse[i].RentDays * returnsResponse.ReturnsResponse[i].ReturnQuantity

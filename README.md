@@ -17,6 +17,7 @@ Count payment of CD that we rent at CD Rental.
 3. [Rent](#rent)
 4. [Rent All](#rent-all)
 5. [Return](#return)
+6. [Payment](#payment)
 
 ### go mod
 Execute go mod at root this folder using this command:
@@ -141,6 +142,11 @@ CREATE TABLE rentall (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NU
 Create Return table:
 ```
 CREATE TABLE return (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, rent_all_id INT REFERENCES rentall(id));
+```
+#### Payment Table
+Create Payment table:
+```
+CREATE TABLE payment (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, return_id INT REFERENCES return(id), total_payment INT DEFAULT 0 NOT NULL);
 ```
 
 ### Collection
@@ -602,5 +608,111 @@ Response Body (Status: 200 OK)
             "totalRate": 40000
         }
     ]
+}
+```
+
+### Payment
+#### POST - /payment
+Request
+```
+{
+    "returnId": 1,
+    "userId": 1,
+    "returns": [
+        {
+            "cdId": 1,
+            "returnQuantity": 1,
+            "rentDays": 2,
+            "ratePerDay": 15000,
+            "totalRate": 30000
+        },
+        {
+            "cdId": 2,
+            "returnQuantity": 2,
+            "rentDays": 2,
+            "ratePerDay": 10000,
+            "totalRate": 40000
+        }
+    ]
+}
+```
+Response Body (Status: 201 Created)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-21T21:46:54.988508+07:00",
+    "returnId": 1,
+    "userId": 1,
+    "totalPayment": 70000,
+    "returns": [
+        {
+            "cdId": 1,
+            "returnQuantity": 1,
+            "rentDays": 2,
+            "ratePerDay": 15000,
+            "totalRate": 30000
+        },
+        {
+            "cdId": 2,
+            "returnQuantity": 2,
+            "rentDays": 2,
+            "ratePerDay": 10000,
+            "totalRate": 40000
+        }
+    ]
+}
+```
+#### GET - /payment/{payment_id}
+Example: /payment/1 <br> 
+Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-21T21:46:54.988508Z",
+    "returnId": 1,
+    "userId": 1,
+    "totalPayment": 70000,
+    "returns": [
+        {
+            "cdId": 1,
+            "returnQuantity": 1,
+            "rentDays": 2,
+            "ratePerDay": 15000,
+            "totalRate": 30000
+        },
+        {
+            "cdId": 2,
+            "returnQuantity": 2,
+            "rentDays": 2,
+            "ratePerDay": 10000,
+            "totalRate": 40000
+        }
+    ]
+}
+```
+Ensure that quantity of that cd_id (cd_id = 1) is added by return_quantity (return_quantity = 1). <br>
+For example, initial quantity of that cd_id (cd_id = 1) in collection is 19. After added by return_quantity (return_quantity = 1), the final quantity is 20. <br>
+Check by GET request to /collection/1 <br> Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-21T22:24:31.37984Z",
+    "title": "Star Wars",
+    "category": "Sci-Fi",
+    "quantity": 20,
+    "rate": 15000
+}
+```
+Ensure that quantity of that cd_id (cd_id = 2) is added by return_quantity (return_quantity = 2). <br>
+For example, initial quantity of that cd_id (cd_id = 2) in collection is 18. After added by return_quantity (return_quantity = 2), the final quantity is 20. <br>
+Check by GET request to /collection/2 <br> Response Body (Status: 200 OK)
+```
+{
+    "id": 2,
+    "dateTime": "2020-04-21T22:24:31.436342Z",
+    "title": "Captain America",
+    "category": "Sci-Fi",
+    "quantity": 20,
+    "rate": 10000
 }
 ```
