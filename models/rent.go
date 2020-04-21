@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type Rent struct {
+type RentRequest struct {
 	QueueNumber  int `json:"queueNumber"`
 	UserID       int `json:"userId"`
 	CdID         int `json:"cdId"`
@@ -39,7 +39,7 @@ func NewRentResponse(id int, dateTime time.Time, queueNumber int, userId int, cd
 	return newRentResponse
 }
 
-func PostRent(singleRent Rent) (RentResponse, error) {
+func PostRent(rentRequest RentRequest) (RentResponse, error) {
 	con := db.ConnectionDB()
 
 	rentResponse := RentResponse{}
@@ -47,19 +47,19 @@ func PostRent(singleRent Rent) (RentResponse, error) {
 
 	err := con.QueryRow(createRentQuery,
 		rentResponse.DateTime,
-		singleRent.QueueNumber,
-		singleRent.UserID,
-		singleRent.CdID,
-		singleRent.RentQuantity).Scan(&rentResponse.ID)
+		rentRequest.QueueNumber,
+		rentRequest.UserID,
+		rentRequest.CdID,
+		rentRequest.RentQuantity).Scan(&rentResponse.ID)
 
 	if err != nil {
 		return rentResponse, err
 	}
 
-	rentResponse.QueueNumber = singleRent.QueueNumber
-	rentResponse.UserID = singleRent.UserID
-	rentResponse.CdID = singleRent.CdID
-	rentResponse.RentQuantity = singleRent.RentQuantity
+	rentResponse.QueueNumber = rentRequest.QueueNumber
+	rentResponse.UserID = rentRequest.UserID
+	rentResponse.CdID = rentRequest.CdID
+	rentResponse.RentQuantity = rentRequest.RentQuantity
 
 	return rentResponse, nil
 }

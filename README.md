@@ -15,7 +15,8 @@ Count payment of CD that we rent at CD Rental.
 1. [Collection](#collection)
 2. [User](#user)
 3. [Rent](#rent)
-3. [Rent All](#rent-all)
+4. [Rent All](#rent-all)
+5. [Return](#return)
 
 ### go mod
 Execute go mod at root this folder using this command:
@@ -135,6 +136,11 @@ CREATE TABLE rent (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL,
 Create Rent All table:
 ```
 CREATE TABLE rentall (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, queue_number INT NOT NULL);
+```
+#### Return Table
+Create Return table:
+```
+CREATE TABLE return (id SERIAL PRIMARY KEY NOT NULL, date_time TIMESTAMP NOT NULL, rent_all_id INT REFERENCES rentall(id));
 ```
 
 ### Collection
@@ -513,6 +519,87 @@ Response Body (Status: 200 OK)
             "userId": 1,
             "cdId": 2,
             "rentQuantity": 2
+        }
+    ]
+}
+```
+
+### Return
+#### POST - /return/all
+Request
+```
+{
+    "rentAllId": 1,
+    "queueNumber": 1,
+    "userId": 1,
+    "rents": [
+        {
+            "id": 1,
+            "dateTime": "2020-04-19T22:38:40.12395Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 1,
+            "rentQuantity": 1
+        },
+        {
+            "id": 2,
+            "dateTime": "2020-04-19T22:59:31.291183Z",
+            "queueNumber": 1,
+            "userId": 1,
+            "cdId": 2,
+            "rentQuantity": 2
+        }
+    ]
+}
+```
+Response Body (Status: 201 Created)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-21T18:05:27.258262+07:00",
+    "rentAllId": 1,
+    "userId": 1,
+    "returns": [
+        {
+            "cdId": 1,
+            "returnQuantity": 1,
+            "rentDays": 2,
+            "ratePerDay": 15000,
+            "totalRate": 30000
+        },
+        {
+            "cdId": 2,
+            "returnQuantity": 2,
+            "rentDays": 2,
+            "ratePerDay": 10000,
+            "totalRate": 40000
+        }
+    ]
+}
+```
+#### GET - /return/all/{return_id}
+Example: /return/all/1 <br> 
+Response Body (Status: 200 OK)
+```
+{
+    "id": 1,
+    "dateTime": "2020-04-21T18:05:27.258262Z",
+    "rentAllId": 1,
+    "userId": 1,
+    "returns": [
+        {
+            "cdId": 1,
+            "returnQuantity": 1,
+            "rentDays": 2,
+            "ratePerDay": 15000,
+            "totalRate": 30000
+        },
+        {
+            "cdId": 2,
+            "returnQuantity": 2,
+            "rentDays": 2,
+            "ratePerDay": 10000,
+            "totalRate": 40000
         }
     ]
 }

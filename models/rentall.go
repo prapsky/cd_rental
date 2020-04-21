@@ -19,7 +19,7 @@ type RentAllResponse struct {
 const (
 	createRentAllQuery = "INSERT INTO rentall(date_time, queue_number) VALUES($1, $2) RETURNING id"
 	getRentAllQuery    = "SELECT id, date_time, queue_number FROM rentall WHERE id = $1"
-	getRentsQuery      = "SELECT id, date_time, queue_number, user_id, cd_id, rent_quantity FROM rent ORDER BY id"
+	getRentsQuery      = "SELECT id, date_time, queue_number, user_id, cd_id, rent_quantity FROM rent WHERE queue_number = $1 ORDER BY id"
 )
 
 func PostRentAll(rentsResponse RentsResponse) (RentAllResponse, error) {
@@ -68,7 +68,7 @@ func GetRentAll(RentAllID string) (RentAllResponse, error) {
 
 	rentsResponse := RentsResponse{}
 
-	rows, err2 := con.Query(getRentsQuery)
+	rows, err2 := con.Query(getRentsQuery, rentAllResponse.QueueNumber)
 	if err2 != nil {
 		return rentAllResponse, err2
 	}

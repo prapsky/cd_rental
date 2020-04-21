@@ -22,5 +22,8 @@ func main() {
 	http.HandleFunc("/rent/all", controllers.PostRentAll)
 	http.HandleFunc("/rent/all/", controllers.GetRentAll)
 
+	http.HandleFunc("/return/all", controllers.PostReturnAll)
+	http.HandleFunc("/return/all/", controllers.GetReturnAll)
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

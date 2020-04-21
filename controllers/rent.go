@@ -11,15 +11,15 @@ func PostRent(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	switch r.Method {
 	case "POST":
-		rent := models.Rent{}
+		rentRequest := models.RentRequest{}
 
-		err := json.NewDecoder(r.Body).Decode(&rent)
+		err := json.NewDecoder(r.Body).Decode(&rentRequest)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		response, err1 := models.PostRent(rent)
+		response, err1 := models.PostRent(rentRequest)
 		if err1 != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
